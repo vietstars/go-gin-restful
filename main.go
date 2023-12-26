@@ -37,7 +37,9 @@ func loadDatabase() {
 
 func serveApplication() {
   router := gin.Default()
-
+  router.ForwardedByClientIP = true
+  router.SetTrustedProxies([]string{"127.0.0.1:8008"})
+  
   sessionExp, _ := strconv.Atoi(os.Getenv("SESSION_EXP"))
   store := cookie.NewStore([]byte(os.Getenv("SESSION_SECRET")))
   store.Options(sessions.Options{MaxAge: sessionExp})
