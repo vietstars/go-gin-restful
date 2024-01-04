@@ -31,15 +31,25 @@ func loadEnv() {
 
 func loadDatabase() {
   database.Connect()
-  database.Database.AutoMigrate(&model.User{})
-  database.Database.AutoMigrate(&model.Entry{})
+
+  if database.DB.Migrator().HasTable(model.User{}) {
+    database.DB.Migrator().DropTable(model.User{})
+  }
+
+  database.DB.AutoMigrate(&model.User{})
+
+  if database.DBS.Migrator().HasTable(model.Entry{}) {
+    database.DBS.Migrator().DropTable(model.Entry{})
+  }
+
+  database.DBS.AutoMigrate(&model.Entry{})
 }
 
 func serveApplication() {
   router := gin.Default()
   router.ForwardedByClientIP = true
-  router.SetTrustedProxies([]string{"127.0.0.1:8008"})
-  
+  router.SetTrustedProxies([]string{os.Getenv("BASE_HOST")})
+
   sessionExp, _ := strconv.Atoi(os.Getenv("SESSION_EXP"))
   store := cookie.NewStore([]byte(os.Getenv("SESSION_SECRET")))
   store.Options(sessions.Options{MaxAge: sessionExp})
@@ -56,6 +66,6 @@ func serveApplication() {
   protectedRoutes.POST("/entry", controller.AddEntry)
   protectedRoutes.GET("/entry", controller.GetAllEntries)
 
-  router.Run(":8000")
-  fmt.Println("Server running on port 8000")
+  router.Run(":8008")
+  fmt.Println("Server running on port 8008")
 }

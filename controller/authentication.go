@@ -7,6 +7,8 @@ import (
 
   "github.com/gin-contrib/sessions"
   "github.com/gin-gonic/gin"
+  // "time"
+  "fmt"
 )
 
 func Register(context *gin.Context) {
@@ -42,12 +44,16 @@ func Login(context *gin.Context) {
     return
   }
 
+  fmt.Println("user: %v\n", input)
+
   user, err := model.FindUserByUsername(input.Username)
 
   if err != nil {
     context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
     return
   }
+
+  fmt.Println("user: %v\n", user)
 
   err = user.ValidatePassword(input.Password)
 
