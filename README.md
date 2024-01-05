@@ -69,3 +69,4 @@ pg_ctl --pgdata=./data/db2 --options="--port=5434" start
 select * from pg_replication_slots;
 
 
+https://github.com/oktadev/okta-go-gin-vue-example
