@@ -152,6 +152,10 @@ import Go_Gin_Gorm.postman_collection.json
 
 ![demo-app-flow](./img/go-routines.png)
 
+### Goroutines - channel
+- Giống redux của react dùng để giao tiếp giá trị tham chiếu (tự hiểu) giữa các goroutines
+- Vì là tham chiều nên nó cũng có cơ chế như 1 tham chiếu bình thường có CRUD.
+
 #### Create Channel
 [channel_name] := make(chan [type])
 ```go
