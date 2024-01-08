@@ -145,11 +145,35 @@ import Go_Gin_Gorm.postman_collection.json
 
 ### Goroutines
 
-- channel, 
+- ___channel___, 
 - wait group, 
 - deadlock, 
 - mutex
 
 ![demo-app-flow](./img/go-routines.png)
+
+#### Create Channel
+<channel_name> := make(chan <type>)
+```go
+processDone := make(chan bool)
+```
+
+#### Update channel
+<channel_name> <- <value>
+```go
+processDone <- false
+```
+
+#### Read channel
+<parameter> <- <channel_name>
+```go
+processing := <- processDone
+```
+
+#### delete channel
+close(<channel_name>)
+```go
+close(processDone)
+```
 
 https://github.com/oktadev/okta-go-gin-vue-example
