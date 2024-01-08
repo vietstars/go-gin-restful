@@ -75,6 +75,16 @@ func Login(context *gin.Context) {
   context.JSON(http.StatusOK, gin.H{"jwt": jwt})
 }
 
+func routine1(times int){
+  time.Sleep(100 * time.Millisecond)
+  fmt.Println("Xử lý process routine-1 lần ", times)
+}
+
+func routine2(times int){
+  time.Sleep(150 * time.Millisecond)
+  fmt.Println("Xử lý process routine-2 lần ", times)
+}
+
 func Incr(context *gin.Context) {
   session := sessions.Default(context)
   var count int
@@ -85,6 +95,15 @@ func Incr(context *gin.Context) {
       count = counter.(int)
       count++
   }
+  
+  go routine1(1)
+  go routine2(1)
+  go routine1(2)
+  go routine2(2)
+
+  time.Sleep(2 * time.Second)
+  fmt.Println("Đã xử lý process 2 luồng go-routine")
+  
   session.Set("count", count)
   session.Save()
   context.JSON(200, gin.H{"count": count})
