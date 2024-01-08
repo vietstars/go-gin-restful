@@ -153,25 +153,25 @@ import Go_Gin_Gorm.postman_collection.json
 ![demo-app-flow](./img/go-routines.png)
 
 #### Create Channel
-<channel_name> := make(chan <type>)
+[channel_name] := make(chan [type])
 ```go
 processDone := make(chan bool)
 ```
 
 #### Update channel
-<channel_name> <- <val>
+[channel_name] <- [value]
 ```go
 processDone <- false
 ```
 
 #### Read channel
-<param> <- <channel_name>
+[param] <- [channel_name]
 ```go
 processing := <- processDone
 ```
 
 #### delete channel
-close(<channel_name>)
+close([channel_name])
 ```go
 close(processDone)
 ```
