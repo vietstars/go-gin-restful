@@ -69,4 +69,86 @@ pg_ctl --pgdata=./data/db2 --options="--port=5434" start
 select * from pg_replication_slots;
 
 
+
+## Hướng dẫn Cài đặt Go
+- [Origin site](https://go.dev/doc/tutorial/getting-started)
+
+
+## Học cơ bản của Go
+- [Go tour](https://go.dev/tour/moretypes/2)
+
+## 1 vài thao tác khi làm việc với GO
+- kiểm tra version của go: 
+```cmd
+go version
+
+go version go1.18.7 darwin/amd64
+```
+
+- Tạo module (thư viện) cho project
+```cmd
+go mod init demo-app
+
+go: creating new go.mod: module demo-app
+go: to add module requirements and sums:
+  go mod tidy
+```
+
+- Cài thư viên cho project
+```cmd
+go get gorm.io/gorm
+```
+
+- Kiểm toán lại thư viện cho project
+```cmd
+go mod tidy
+```
+
+Flow Demo App
+
+![demo-app-flow](./img/GoLang-Gin-Gorm.png)
+
+# Install project:
+
+### Clone source
+```cmd
+https://github.com/huybinhvn/go_lang
+```
+
+### Run project
+```cmd
+cd go_lang/go-gin-restful
+
+go mod tidy
+```
+
+### Compile source
+```cmd
+go build main.go
+```
+
+### Run project
+```cmd
+go run main.go
+```
+
+#### Server running at port:8008
+
+### Check web application
+http://localhost:8008
+
+### Check API from post-man
+import Go_Gin_Gorm.postman_collection.json
+
+### Server running with Log
+![demo-app-flow](./img/Screenshot-2024-01-08_at_2.06.10_PM.png)
+
+### Goroutines
+
+- channel, 
+- wait group, 
+- deadlock, 
+- mutex
+
+
 https://github.com/oktadev/okta-go-gin-vue-example
