@@ -159,13 +159,13 @@ processDone := make(chan bool)
 ```
 
 #### Update channel
-<channel_name> <- <value>
+<channel_name> <- <val>
 ```go
 processDone <- false
 ```
 
 #### Read channel
-<parameter> <- <channel_name>
+<param> <- <channel_name>
 ```go
 processing := <- processDone
 ```
