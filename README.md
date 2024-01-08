@@ -150,5 +150,6 @@ import Go_Gin_Gorm.postman_collection.json
 - deadlock, 
 - mutex
 
+![demo-app-flow](./img/go-routines.png)
 
 https://github.com/oktadev/okta-go-gin-vue-example
