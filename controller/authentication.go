@@ -8,7 +8,9 @@ import (
   "github.com/gin-contrib/sessions"
   "github.com/gin-gonic/gin"
   // "time"
+  "strconv"
   "fmt"
+  "os"
 )
 
 func Register(context *gin.Context) {
@@ -32,7 +34,40 @@ func Register(context *gin.Context) {
     return
   }
 
+  _, err = sendEmail()
+
+  if err != nil {
+    context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+    return
+  }
+
   context.JSON(http.StatusCreated, gin.H{"user": savedUser})
+}
+
+func sendEmail() (bool, error) {
+  mailHost := os.Getenv("MAIL_HOST")
+  mailPort, _ := strconv.Atoi(os.Getenv("MAIL_PORT"))
+  username := os.Getenv("MAIL_USERNAME")
+  password := os.Getenv("MAIL_PASSWORD")
+  fromEmail := os.Getenv("MAIL_FROM_ADDRESS")
+  fromName := os.Getenv("MAIL_FROM_NAME")
+
+  d := gomail.NewPlainDialer(mailHost, mailPort, username, password)
+
+  m := gomail.NewMessage()
+  m.SetAddressHeader("From", fromEmail, fromName)
+  m.SetAddressHeader("To", "recipient@example.com", "noah.doe@example.com")
+  m.SetAddressHeader("Cc", "oliver.doe@example.com", "Oliver")
+  m.SetHeader("Subject", "Hello!")
+  m.SetBody("text/html", "Hello <b>Kate</b> and <i>Noah</i>!")
+
+  // m.Attach("lolcat.jpg")
+
+  if err := d.DialAndSend(m); err != nil {
+    return false, err
+  }
+
+  return true, nil
 }
 
 func Login(context *gin.Context) {
