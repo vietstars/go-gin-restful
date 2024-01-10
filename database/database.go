@@ -5,21 +5,72 @@ import (
   "os"
 
   "gorm.io/driver/postgres"
+  "gorm.io/plugin/dbresolver"
+  "gorm.io/sharding"
   "gorm.io/gorm"
 )
 
-var Database *gorm.DB
+//database master
+var DB *gorm.DB
+//database shading
+var DBS *gorm.DB
+//database replicate
+var DBR *gorm.DB
 
 func Connect() {
   var err error
   host := os.Getenv("DB_HOST")
+  databaseName := os.Getenv("DB_NAME")
   username := os.Getenv("DB_USER")
   password := os.Getenv("DB_PASSWORD")
-  databaseName := os.Getenv("DB_NAME")
   port := os.Getenv("DB_PORT")
 
-  dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Africa/Lagos", host, username, password, databaseName, port)
-  Database, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+  slaveHost := os.Getenv("SLAVE_DB_HOST")
+  slaveDBName := os.Getenv("SLAVE_DB_NAME")
+  slaveDBUser := os.Getenv("SLAVE_DB_USER")
+  slavePass := os.Getenv("SLAVE_DB_PASSWORD")
+  slavePort := os.Getenv("SLAVE_DB_PORT")
+
+  dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Saigon",
+    host,
+    username,
+    password,
+    databaseName,
+    port,
+  )
+
+  dsnSlave := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Saigon",
+    slaveHost,
+    slaveDBUser,
+    slavePass,
+    slaveDBName,
+    slavePort,
+  )
+
+  conn := postgres.Open(dsn)
+  connSlave := postgres.Open(dsnSlave)
+
+  DB, err = gorm.Open(conn, &gorm.Config{
+    DisableForeignKeyConstraintWhenMigrating: true,
+  })
+
+  DBS, err = gorm.Open(conn, &gorm.Config{
+    DisableForeignKeyConstraintWhenMigrating: true,
+  })
+
+  DBR, err = gorm.Open(connSlave, &gorm.Config{
+    DisableForeignKeyConstraintWhenMigrating: true,
+  })
+
+  DBS.Use(dbresolver.Register(dbresolver.Config{
+    Replicas: []gorm.Dialector{DBR.Dialector},
+  }))
+
+  DBS.Use(sharding.Register(sharding.Config{
+    ShardingKey: "user_id",
+    NumberOfShards: 26,
+    PrimaryKeyGenerator: sharding.PKSnowflake,
+  }, "entries"))
 
   if err != nil {
     panic(err)

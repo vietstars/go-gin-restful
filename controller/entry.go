@@ -6,6 +6,8 @@ import (
   "net/http"
 
   "github.com/gin-gonic/gin"
+  // "time"
+  // "fmt"
 )
 
 func AddEntry(context *gin.Context) {
@@ -23,7 +25,7 @@ func AddEntry(context *gin.Context) {
     return
   }
 
-  input.UserID = user.ID
+  input.UserID = int64(user.ID)
 
   savedEntry, err := input.Save()
 
@@ -44,5 +46,17 @@ func GetAllEntries(context *gin.Context) {
     return
   }
 
-  context.JSON(http.StatusOK, gin.H{"data": user.Entries})
+  current, err := model.FindUserById(int64(user.ID))
+  if err != nil {
+    context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+    return 
+  }
+
+  // current, err := model.FindEntriesByUserID(int64(user.ID))
+  // if err != nil {
+  //   context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+  //   return 
+  // }
+
+  context.JSON(http.StatusOK, gin.H{"data": current.Entries})
 }

@@ -5,7 +5,6 @@ import (
   "errors"
   "fmt"
   "os"
-  // "strconv"
   "strings"
   "time"
 
@@ -51,7 +50,7 @@ func CurrentUser(context *gin.Context) (model.User, error) {
 
   token, _ := getToken(context)
   claims, _ := token.Claims.(jwt.MapClaims)
-  userId := uint(claims["id"].(float64))
+  userId := int64(claims["id"].(float64))
 
   user, err := model.FindUserById(userId)
   if err != nil {

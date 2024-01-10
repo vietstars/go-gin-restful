@@ -5,7 +5,6 @@ import (
   "html"
   "strings"
   "time"
-  // "fmt"
 
   "golang.org/x/crypto/bcrypt"
   "gorm.io/plugin/dbresolver"
@@ -20,6 +19,7 @@ type User struct {
   Password string `gorm:"size:255;not null;" json:"-"`
   Email string `gorm:"size:255;not null;unique" json:"email"`
   Avatar string `gorm:"size:255;" json:"avatar"`
+
   Entries  []Entry `gorm:"foreignKey:UserID; constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
   CreatedAt time.Time `gorm:"autoCreateTime:true" json:"CreatedAt"`
   UpdatedAt time.Time `gorm:"autoUpdateTime:true" json:"UpdatedAt"`
@@ -51,6 +51,7 @@ func (user *User) ValidatePassword(password string) error {
 func FindUserByUsername(username string) (User, error) {
   var user User
   err := database.DB.Where("username", username).Find(&user).Error
+  
   if err != nil {
     return User{}, err
   }
@@ -60,6 +61,7 @@ func FindUserByUsername(username string) (User, error) {
 func FindUserByEmail(email string) (User, error) {
   var user User
   err := database.DB.Where("email", email).Find(&user).Error
+
   if err != nil {
     return User{}, err
   }
@@ -96,4 +98,3 @@ func (user *User) EditUser() (*User, error) {
   }
   return user, nil
 }
-
