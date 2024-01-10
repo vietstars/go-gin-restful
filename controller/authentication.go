@@ -3,6 +3,7 @@ package controller
 import (
   "go-gin-restful/helper"
   "go-gin-restful/model"
+  "go-gin-restful/email"
   "net/http"
 
   "github.com/gin-contrib/sessions"
@@ -25,6 +26,7 @@ func Register(context *gin.Context) {
   user := model.User{
     Username: input.Username,
     Password: input.Password,
+    Email: input.Email,
   }
 
   savedUser, err := user.Save()
@@ -34,7 +36,7 @@ func Register(context *gin.Context) {
     return
   }
 
-  _, err = sendEmail()
+  err = email.SendEmail(user)
 
   if err != nil {
     context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -79,9 +81,8 @@ func Login(context *gin.Context) {
     return
   }
 
-  fmt.Println("user: %v\n", input)
-
-  user, err := model.FindUserByUsername(input.Username)
+  // user, err := model.FindUserByUsername(input.Username)
+  user, err := model.FindUserByEmail(input.Email)
 
   if err != nil {
     context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

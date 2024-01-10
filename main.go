@@ -65,6 +65,7 @@ func serveApplication() {
   protectedRoutes.Use(middleware.JWTAuthMiddleware())
   protectedRoutes.POST("/entry", controller.AddEntry)
   protectedRoutes.GET("/entry", controller.GetAllEntries)
+  protectedRoutes.POST("/edit-profile", controller.EditProfile)
 
   router.Run(":8008")
   fmt.Println("Server running on port 8008")
