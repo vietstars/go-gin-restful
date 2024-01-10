@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "f98d1dda-e599-4faf-b4bc-b866d9a383b7",
+		"_postman_id": "bf38fa9e-28e9-436d-8c4d-6d659c63c440",
 		"name": "Go_Gin_Gorm",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "12025242",
-		"_collection_link": "https://am-bition.postman.co/workspace/am-bition.vn~3e2d14e7-8d69-4c81-8be3-52f3fbe32f24/collection/12025242-f98d1dda-e599-4faf-b4bc-b866d9a383b7?action=share&creator=12025242&source=collection_link"
+		"_collection_link": "https://am-bition.postman.co/workspace/am-bition.vn~3e2d14e7-8d69-4c81-8be3-52f3fbe32f24/collection/12025242-bf38fa9e-28e9-436d-8c4d-6d659c63c440?action=share&source=collection_link&creator=12025242"
 	},
 	"item": [
 		{
@@ -71,7 +71,7 @@
 			]
 		},
 		{
-			"name": "entries list",
+			"name": "Entries list",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -101,7 +101,7 @@
 			"response": []
 		},
 		{
-			"name": "add entry",
+			"name": "Add entry",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -134,6 +134,51 @@
 					"path": [
 						"api",
 						"entry"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit-profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlYXQiOjE3MDQ4NzgwOTAsImlhdCI6MTcwNDg3ODA5MCwiaWQiOjF9.h2TySrBdxIGbxdOrgsgwFrabu9gCp6dLgabsjWKGtkQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "go_gin_session=MTcwNDg3NTU2MnxEdi1CQkFFQ180SUFBUkFCRUFBQV82al9nZ0FCQm5OMGNtbHVad3dGQUFOcWQzUUdjM1J5YVc1bkRQLU1BUC1KWlhsS2FHSkhZMmxQYVVwSlZYcEpNVTVwU1hOSmJsSTFZME5KTmtscmNGaFdRMG81TG1WNVNteFpXRkZwVDJwRk0wMUVVVFJPZWxVeFRtcEpjMGx0Ykdoa1EwazJUVlJqZDA1RVp6Tk9WRlV5VFdsM2FXRlhVV2xQYWtZNUxtbDVRMHRCUkU5VFNsQlhhemR6VG5BelVtWTVWVk5wTkd0RFYxOUdVMnhxY2xwSVQzUnVjVGx0WlRnPXwKe1706R9NYxMdUxrVq1RbYU8xhBY10-AARxGjBgbbdg==; Expires=Thu, 11 Jan 2024 08:32:42 GMT; Max-Age=86400",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Email\": \"vietstar1.nt@gmail.com\",\n    \"Username\": \"ben pro 1\",\n    \"Avatar\": \"https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes-thumbnail.png\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8008/api/edit-profile",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8008",
+					"path": [
+						"api",
+						"edit-profile"
 					]
 				}
 			},
