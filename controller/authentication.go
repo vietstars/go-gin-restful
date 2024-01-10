@@ -3,13 +3,13 @@ package controller
 import (
   "go-gin-restful/helper"
   "go-gin-restful/model"
+  "go-gin-restful/email"
   "net/http"
 
   "github.com/gin-contrib/sessions"
   "github.com/gin-gonic/gin"
-  "gopkg.in/gomail.v2"
-  "strconv"
-  "os"
+  // "time"
+  // "fmt"
 )
 
 func Register(context *gin.Context) {
@@ -24,6 +24,7 @@ func Register(context *gin.Context) {
   user := model.User{
     Username: input.Username,
     Password: input.Password,
+    Email: input.Email,
   }
 
   savedUser, err := user.Save()
@@ -33,7 +34,7 @@ func Register(context *gin.Context) {
     return
   }
 
-  _, err = sendEmail()
+  err = email.SendEmail(user)
 
   if err != nil {
     context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -41,32 +42,6 @@ func Register(context *gin.Context) {
   }
 
   context.JSON(http.StatusCreated, gin.H{"user": savedUser})
-}
-
-func sendEmail() (bool, error) {
-  mailHost := os.Getenv("MAIL_HOST")
-  mailPort, _ := strconv.Atoi(os.Getenv("MAIL_PORT"))
-  username := os.Getenv("MAIL_USERNAME")
-  password := os.Getenv("MAIL_PASSWORD")
-  fromEmail := os.Getenv("MAIL_FROM_ADDRESS")
-  fromName := os.Getenv("MAIL_FROM_NAME")
-
-  d := gomail.NewPlainDialer(mailHost, mailPort, username, password)
-
-  m := gomail.NewMessage()
-  m.SetAddressHeader("From", fromEmail, fromName)
-  m.SetAddressHeader("To", "recipient@example.com", "noah.doe@example.com")
-  m.SetAddressHeader("Cc", "oliver.doe@example.com", "Oliver")
-  m.SetHeader("Subject", "Hello!")
-  m.SetBody("text/html", "Hello <b>Kate</b> and <i>Noah</i>!")
-
-  // m.Attach("lolcat.jpg")
-
-  if err := d.DialAndSend(m); err != nil {
-    return false, err
-  }
-
-  return true, nil
 }
 
 func Login(context *gin.Context) {
@@ -78,7 +53,8 @@ func Login(context *gin.Context) {
     return
   }
 
-  user, err := model.FindUserByUsername(input.Username)
+  // user, err := model.FindUserByUsername(input.Username)
+  user, err := model.FindUserByEmail(input.Email)
 
   if err != nil {
     context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
