@@ -182,3 +182,10 @@ close(processDone)
 
 https://github.com/oktadev/okta-go-gin-vue-example
 https://github.com/wpcodevo/golang-gorm-postgres.git
+
+#### Testing 
+```cmd
+go test ./testing
+go test ./testing  -timeout 120s -v -short -cover -coverprofile=coverage.out
+go tool cover -html=coverage.out
+```
