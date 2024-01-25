@@ -7,7 +7,7 @@ import (
 
 func PublicRoute (router *gin.RouterGroup) {
 
-  router.POST("/register", controller.Register)
-  router.POST("/login", controller.Login)
+  router.POST("/news", controller.Register)
+  router.POST("/post", controller.Login)
 }
 

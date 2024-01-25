@@ -38,6 +38,9 @@ func ValidateJWT(context *gin.Context) error {
     return nil
   }
 
+  //check if caching login user or 
+  //login session database to manager language, multiple logggin devices
+
   return errors.New("invalid token provided")
 }
 

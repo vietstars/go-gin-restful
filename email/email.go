@@ -9,7 +9,6 @@ import (
   "fmt"
 )
 
-// func SendEmail(user *models.DBResponse, data *EmailData, temp *template.Template, templateName string) error {
 func SendEmail(user model.User) error {
   mailHost := os.Getenv("MAIL_HOST")
   mailPort, _ := strconv.Atoi(os.Getenv("MAIL_PORT"))

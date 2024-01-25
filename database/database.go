@@ -6,7 +6,6 @@ import (
 
   "gorm.io/driver/postgres"
   "gorm.io/plugin/dbresolver"
-  "gorm.io/sharding"
   "gorm.io/gorm"
 )
 
@@ -65,12 +64,6 @@ func Connect() {
   DBS.Use(dbresolver.Register(dbresolver.Config{
     Replicas: []gorm.Dialector{DBR.Dialector},
   }))
-
-  DBS.Use(sharding.Register(sharding.Config{
-    ShardingKey: "user_id",
-    NumberOfShards: 26,
-    PrimaryKeyGenerator: sharding.PKSnowflake,
-  }, "entries"))
 
   if err != nil {
     panic(err)
