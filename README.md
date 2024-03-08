@@ -190,3 +190,6 @@ go test ./testing  -timeout 120s -v -short -cover -coverprofile=coverage.out
 go tool cover -html=coverage.out
 go tool cover -html cover.out -o cover.html
 ```
+
+#### admin vue - react template ####
+https://madewithvuejs.com/admin-one
